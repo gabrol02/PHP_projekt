@@ -1,11 +1,11 @@
 
 <?php
-if (empty($_SESSION['users_id'])) {
+if (empty($_SESSION['felhasznalo_id'])) {
         header('Location: index.php?page=index');
     }
   if (isset($_POST['del'])) {
     
-    $sql="SELECT picture_name FROM pictures WHERE picture_id=".$_POST['selected_picture_id']." and users_id=".$_SESSION['users_id']."";
+    $sql="SELECT picture_name FROM pictures WHERE picture_id=".$_POST['selected_picture_id']." and felhasznalo_id=".$_SESSION['felhasznalo_id']."";
     if(!$result = $conn->query($sql)) echo $conn->error;
     if($result->num_rows > 0){
         if($row = $result->fetch_assoc()) {
@@ -14,18 +14,18 @@ if (empty($_SESSION['users_id'])) {
     }
 
     if($result->num_rows > 0){
-        $sql ="DELETE FROM pictures WHERE picture_id=".$_POST['selected_picture_id']." and users_id=".$_SESSION['users_id']."";
+        $sql ="DELETE FROM pictures WHERE picture_id=".$_POST['selected_picture_id']." and felhasznalo_id=".$_SESSION['felhasznalo_id']."";
         if(!$result = $conn->query($sql)) echo $conn->error;
     }
      
   }
     if(isset($_POST['fav'])){
-        $sql = "SELECT favorited_picture_id FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and users_id=".$_SESSION['users_id']."";
+        $sql = "SELECT favorited_picture_id FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and felhasznalo_id=".$_SESSION['felhasznalo_id']."";
         if(!$result = $conn->query($sql)) echo $conn->error;
         if($result->num_rows > 0){
             
     
-            $sql = "DELETE FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and users_id=".$_SESSION['users_id']."";
+            $sql = "DELETE FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and felhasznalo_id=".$_SESSION['felhasznalo_id']."";
             if ($conn->query($sql) === TRUE) {
                 
             } else {
@@ -38,12 +38,12 @@ if (empty($_SESSION['users_id'])) {
 
 
 if(isset($_POST['fav'])){
-    $sql = "SELECT favorited_picture_id FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and users_id=".$_SESSION['users_id']."";
+    $sql = "SELECT favorited_picture_id FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and felhasznalo_id=".$_SESSION['felhasznalo_id']."";
     if(!$result = $conn->query($sql)) echo $conn->error;
     if($result->num_rows > 0){
         
 
-        $sql = "DELETE FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and users_id=".$_SESSION['users_id']."";
+        $sql = "DELETE FROM favourite WHERE favorited_picture_id=".$_POST['selected_picture_id']." and felhasznalo_id=".$_SESSION['felhasznalo_id']."";
         if ($conn->query($sql) === TRUE) {
             
         } else {
@@ -68,14 +68,14 @@ if(isset($_POST['fav'])){
                 $str=explode("/",$_FILES["profilepicture"]["type"]);
                 if(empty($errors[$key])){
                     @move_uploaded_file($_FILES["profilepicture"]["tmp_name"],$target_file);
-                    $sql="INSERT INTO pictures (users_id,picture_name,size,formats,cat_id)
-                        VALUES ('".$_SESSION['users_id']."','".$target_file."','".$_FILES["profilepicture"]["size"]."','".$str[1]."','1')";
+                    $sql="INSERT INTO pictures (felhasznalo_id,picture_name,size,formats,cat_id)
+                        VALUES ('".$_SESSION['felhasznalo_id']."','".$target_file."','".$_FILES["profilepicture"]["size"]."','".$str[1]."','1')";
                     if ($conn->query($sql) === TRUE) {
                     } else {
                         echo "Error: " . $sql . "<br>" . $conn->error;
                     }
                 }
-                $sql="SELECT picture_id FROM pictures WHERE users_id='".$_SESSION['users_id']."' AND picture_name ='".$target_file."'";
+                $sql="SELECT picture_id FROM pictures WHERE felhasznalo_id='".$_SESSION['felhasznalo_id']."' AND picture_name ='".$target_file."'";
                 if(!$result = $conn->query($sql)) echo $conn->error;
                 if ($result->num_rows > 0) {
                     if($row = $result->fetch_assoc()) {
@@ -94,7 +94,7 @@ if(isset($_POST['fav'])){
                         }
                     $conn->close();
                 }else{
-                        $sql = "UPDATE profile_pics SET picture_id ='".$_SESSION['picture_id']."' WHERE users_id='".$_SESSION['users_id']."' ";
+                        $sql = "UPDATE profile_pics SET picture_id ='".$_SESSION['picture_id']."' WHERE felhasznalo_id='".$_SESSION['felhasznalo_id']."' ";
                         if ($conn->query($sql) === TRUE) {
                             echo $_SESSION['success']="Sikeres profilkép változtatás";
                             

@@ -19,7 +19,7 @@ $action = "login";
 
 if(isset($_REQUEST['searched'])){
                 $_SESSION['search']=$_REQUEST['searched'];
-                $page = "searchedUser"; 
+                $page = "searched"; 
                 $title=$_REQUEST['searched'];
                 
 
@@ -40,8 +40,8 @@ if(!empty($_SESSION["felhasznalo_id"])) {
                 if($result->num_rows > 0){
                         $menupontok = array(    
                                 'index' => "Főoldal", 
-                                'profile'=> "Profil: ".$_SESSION['username'],
-                                'upload'=>"Feltöltés",
+                                'profile'=> "Profil: ".$_SESSION['nev'],
+                                'upload'=>"Áru feltöltés",
                                 'admin'=>"Admin",
                                 $action => $szoveg
                 
@@ -50,7 +50,7 @@ if(!empty($_SESSION["felhasznalo_id"])) {
                         $menupontok = array(    
                         'index' => "Főoldal", 
                         'profile'=> "Profil: ".$_SESSION['nev'],
-                        'upload'=>"Feltöltés",
+                        'upload'=>"Áru feltöltés",
                         $action => $szoveg
         
 );  
@@ -69,7 +69,10 @@ if(array_key_exists($page,$menupontok)){
         
 include 'includes/htmlheader.inc.php';
 require 'model/Users.php';
+require 'model/Termek.php';
 $tanulo=new Users;
+$termek=new Termek;
+$termekIds=$termek->termekekLista($conn);
 ?>
 
 

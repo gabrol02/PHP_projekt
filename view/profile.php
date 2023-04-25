@@ -35,7 +35,7 @@ if ($_SESSION["gender"]==0) {
 if(isset($_POST['favpics'])){
     echo"<div class='flex-container' id='flex-con'>";
     
-            $sql = "SELECT favorited_picture_id FROM favourite WHERE users_id=".$_SESSION['users_id']." ORDER BY favorited_picture_id DESC";
+            $sql = "SELECT favorited_picture_id FROM favourite WHERE felhasznalo_id=".$_SESSION['felhasznalo_id']." ORDER BY favorited_picture_id DESC";
             if(!$result = $conn->query($sql)) echo $conn->error;
             if($result->num_rows > 0){
                 while($row = $result->fetch_assoc()) {
@@ -43,7 +43,7 @@ if(isset($_POST['favpics'])){
                     if($pictures->get_category()!="Profilkep"){
                         echo '<div class="keret"><span><img class="kepek" src="'.$pictures->get_picture_name().'"><span>'.$pictures->get_category().'</span></span>';
                         
-                       $sql="SELECT users_id FROM favourite WHERE favorited_picture_id=".$pictures->get_picture_id()." and users_id=".$_SESSION['users_id']." ORDER BY users_id ASC ";
+                       $sql="SELECT felhasznalo_id FROM favourite WHERE favorited_picture_id=".$pictures->get_picture_id()." and felhasznalo_id=".$_SESSION['felhasznalo_id']." ORDER BY felhasznalo_id ASC ";
                         if(!$rs = $conn->query($sql)) echo $conn->error;
                         echo'<form action="index.php?page=profile" method="post" id="absolut">';
                         if($rs->num_rows > 0){
@@ -70,13 +70,13 @@ if ($pictureIds) {
 
         $pictures->set_photo($pictureId,$conn);
 
-        $sql = "SELECT picture_id FROM pictures WHERE users_id = '".$_SESSION['users_id']."'";
+        $sql = "SELECT picture_id FROM pictures WHERE felhasznalo_id = '".$_SESSION['felhasznalo_id']."'";
 
         if($result->num_rows > 0){
             
             
                 if($pictures->get_category()!="Profilkep"){
-                    if ($pictures->get_users_id()==$_SESSION['users_id']) {
+                    if ($pictures->get_felhasznalo_id()==$_SESSION['felhasznalo_id']) {
                         echo '<div class="keret"><span><img class="kepek" src="'.$pictures->get_picture_name().'"><span>'.$pictures->get_category().'
                         <form action="index.php?page=profile" method="post">
                         <input type="hidden" value="'.$pictures->get_picture_id().'" name="selected_picture_id">

@@ -1,5 +1,5 @@
 <?php 
-if (empty($_SESSION['users_id'])) {
+if (empty($_SESSION['felhasznalo_id'])) {
     header('Location: index.php?page=index');
 }
 
@@ -9,10 +9,10 @@ $addAdminError="";
 $addCategoryError="";
 
 if (isset($_POST['adminadd'])) {
-    if (isset($_POST['addadminname'])) {
-        if($_POST['addadminname']!="defaultvalue"){
-                $sql="INSERT INTO admins(users_id,layer)
-                VALUES('".$_POST['addadminname']."','0')";
+    if (isset($_POST['addadminnev'])) {
+        if($_POST['addadminnev']!="defaultvalue"){
+                $sql="INSERT INTO admin(felhasznalo_id)
+                VALUES('".$_POST['addadminnev']."')";
                 if($conn->query($sql) === TRUE) {
                     $addAdminError="Sikeres admin hozzáadás!<br>";
                     
@@ -25,12 +25,12 @@ if (isset($_POST['adminadd'])) {
 }
 
 if (isset($_POST['deleteadmin'])) {
-    if (isset($_POST['deladminname']) and strlen($_POST['deladminname']!=0)) {
+    if (isset($_POST['deladminnev']) and strlen($_POST['deladminnev']!=0)) {
         
     
-    if($_POST['deladminname']!="defaultvalue"){
+    if($_POST['deladminnev']!="defaultvalue"){
         
-             $sql="DELETE FROM admins WHERE users_id='".$_POST['deladminname']."'";
+             $sql="DELETE FROM admin WHERE felhasznalo_id='".$_POST['deladminnev']."'";
              if($conn->query($sql) === TRUE) {
                 $deleteAdminError="Sikeres admin törlés!<br>";
                 
@@ -39,53 +39,41 @@ if (isset($_POST['deleteadmin'])) {
           }
          }
      }else $addAdminError="Válassza ki az admint akit törölni akar.";
-    }
+}
+if(isset($_POST['addaru'])){
 
- if (isset($_POST['addcat']) and isset($_POST['addcatname'])) {
-     if(!empty($_POST['addcatname'])) {
-    $sql = "SELECT category FROM cat WHERE category = '".$_POST['addcatname']."'";
+ if ( isset($_POST['addaruar']) and isset($_POST['addarukat']) and isset($_POST['addarunev'])) {
+    echo 'asd';
+     if(!empty($_POST['addarunev'])) {
+    $sql = "SELECT termek_nev FROM termek WHERE termek_nev = '".$_POST['addarunev']."'";
     if(!$result = $conn->query($sql)) echo $conn->error;
     if ($result->num_rows > 0) {
-        $addCategoryError="Ilyen kategória már létezik";
+        $addCategoryError="Ilyen áru már létezik";
     }else{
-        $sql="INSERT INTO cat (category)
-        VALUES ('".$_POST['addcatname']."')";
+        $sql="INSERT INTO termek(termek_nev,termek_ar,termek_tipus)
+        VALUES ('".$_POST['addarunev']."','".$_POST['addaruar']."','".$_POST['addarukat']."')";
         if ($conn->query($sql) === TRUE) {
-            $addCategoryError="Sikeres kategória hozzáadás";        
+            $addCategoryError="Sikeres áru hozzáadás";        
         }else {
             echo"Error: " . $sql . "<br>" . $conn->error;
         }
     }
-}else $addCategoryError="Nem adtál meg nevet az új kategóriának.";
+}else $addCategoryError="Nem adtál meg nevet az új árunak.";
 }
-
-if (isset($_POST['delcategory'])) {
-if (isset($_POST['delcat'])!=null) {
-if($_POST['delcat']!="defaultvalue"){
-    
-     $sql="SELECT picture_name FROM pictures WHERE cat_id='".$_POST['delcat']."'";
-    
-    if(!$result = $conn->query($sql)) echo $conn->error;
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            unlink($row['picture_name']);
-            $sql="DELETE FROM pictures WHERE cat_id='".$_POST['delcat']."'";
-            if(!$rs= $conn->query($sql)) echo $conn->error;
-        }
-    }else $deleteCategoryError="Ilyen kategória nem létezik";
-    $sql="DELETE FROM cat WHERE cat_id='".$_POST['delcat']."'";
-    if ($result->num_rows > 0) {
-        if($result = $conn->query($sql)) 
-        {
-            $deleteCategoryError='Kategória törölve!';
-        }else{
-            $deleteCategoryError=$conn->error;
-            
-        }
-    }
-    
 }
-}else $deleteCategoryError="Nem választottál törölni kívánt kategóriát.";
+if (isset($_POST['delaru'])) {
+    if (isset($_POST['delaru']) and strlen($_POST['delarunev']!=0)) {
+        if($_POST['delarunev']!="defaultvalue"){
+                 $sql="DELETE FROM termek WHERE termekek_id='".$_REQUEST['delarunev']."'";
+                 if(!$result = $conn->query($sql)) echo $conn->error;
+                 if($conn->query($sql) === TRUE) {
+                    $deleteAruError="Sikeres áru törlés!<br>";
+                    
+              } else {
+                $deletearuError="Error: " . $sql . "<br>" . $conn->error;
+              }
+             }
+         }else $deleteAruError="Válassza ki az árut akit törölni akar.";
 }
 include "view/admin.php"
  ?>
