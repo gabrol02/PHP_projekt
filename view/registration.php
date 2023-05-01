@@ -1,8 +1,4 @@
-<?php
- include 'includes/db.inc.php' ;
 
-
-?>
 
 
 <div class="middle">
@@ -31,11 +27,5 @@
 						<input name="submit"type="submit">
 </form>
 </div>
-<script>
-    document.getElementById('password1').oninput=document.getElementById('password').oninput=function (){
-        if( document.getElementById('password').value != document.getElementById('password1').value ){
-            document.getElementById('message').innerHTML="A jelszók nem egyeznek!<br>";
-        }else document.getElementById('message').innerHTML="";
-	}
-		</script>
+
 	

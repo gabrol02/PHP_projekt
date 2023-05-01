@@ -1,9 +1,5 @@
 
-<div id="mySidenav" class="sidenav ">
-<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
 
-</div>
- <span style="font-size:30px;cursor:pointer" class="feher" id="oldalsav" onclick="openNav()">☰ <span id="category">Kategóriák</span></span>
 <?php 
 	echo"<div class='flex-container' id='flex-con'>";
     if ($termekIds) {
@@ -13,7 +9,12 @@
         if($result->num_rows > 0){
             
                 $termek->set_termek($termekId,$conn);
-                echo '<span>'.$termek->get_termek_nev().''.$termek->get_termek_ar().'</span>';
+                echo '<span > Termék: '.$termek->get_termek_nev().' | Ár/kg: '.$termek->get_termek_ar().'</span>';
+                echo '<form action="index.php?page=index" method="POST">
+                        <input type="hidden" value="'.$termekId.'" name="selected_termek_id">
+                        <input type="text" name="mennyiseg" required> 
+                        <input type="submit" name="addkosar"  value="Kosárba"  id="submit">
+                      </form>';
          } 
         }
     }
@@ -23,28 +24,3 @@ echo"</div>";
 
 ?>
 
-<script>
-        function openNav() {
-           
-                
-          document.getElementById("mySidenav").style.width = "200px";
-          document.getElementById("oldalsav").style.display="none";
-          
-            
-        }
-
-        function closeNav() {
-          document.getElementById("mySidenav").style.width = "0%";
-          document.getElementById("oldalsav").style.display="inline";
-         
-        }
-        function favo() {
-          document.getElementById("nofav").style.backgroundImage = "url(../pictures/onfav.png)";
-
-          
-        }
-        function favno() {
-          document.getElementById("onfav").style.backgroundImage = "url(../pictures/nofav.png)";
-        }
-      </script>
-      

@@ -1,9 +1,7 @@
 <?php
 echo "<div id='fehel'>";
 echo $deleteAdminError;
-echo $deleteCategoryError;
 echo $addAdminError;
-echo $addCategoryError;
 echo "</div>";
 ?>
 <div class="middle">
@@ -56,5 +54,33 @@ if($result->num_rows > 0){
             <?php
             }
             ?>
+
+<form action="index.php?page=admin" method="POST"> 
+            <h2>Típus hozzáadása:</h2>
+            <input type="text" placeholder="Típus neve" name="addtipusnev">
+            <input type="submit" name="addtipus"  value="Típus hozzáadása"  id="submit">
+            </form>
+                   <form action="index.php?page=admin" method="POST">
+                    <h2>Típus törlése:</h2>
+                        <select name="deltipus" required>
+                        <option disabled selected value="defaulttipus">Válasszon típust!</option>
+                           <?php 
+                            $sql="SELECT termek_tipus_id, tipus FROM termek_tipus ";
+                           
+                            if(!$rs = $conn->query($sql)) echo $conn->error;
+                            if($rs->num_rows > 0){
+                                while($row = $rs->fetch_assoc()) {
+                                        echo" <option name='deltipusnev' value=".$row['termek_tipus_id']." >".$row['tipus']."</option>";
+                                }
+                            }
+                            ?>
+                            
+                        </select>
+                        <input type="submit" name="deletetipus" value="Típus törlése" id="submit">
+                    </form>
+                 
+            
+
+            
         
 

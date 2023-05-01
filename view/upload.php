@@ -1,20 +1,11 @@
+<?php 
+echo $deleteAruError;
 
+echo $addAruError;
 
-
-<?php
-if ($i>0) echo "$i fájl feltöltve" ;
-if ($errors) {
-    foreach($errors as $error){
-        foreach($error as $errorMsg){
-            echo"$errorMsg <br>";
-        
-        }
-    }
-}
-if(isset($_SESSION['success'])){
-echo $_SESSION['success'];
-}
 ?>
+
+
 <div class="middle">
             
             <form action="index.php?page=upload" method="POST"> 
@@ -24,7 +15,7 @@ echo $_SESSION['success'];
             
             
                 <select name="addarukat" id="cat" required>
-                <option disabled selected value="defaultvalue">Válasszon árut!</option>
+                <option disabled selected value="defaultvalue">Válasszon árutípust!</option><br>
                    <?php 
                     $sql="SELECT termek_tipus_id,tipus FROM termek_tipus";
                     if(!$rs = $conn->query($sql)) echo $conn->error;
@@ -44,7 +35,7 @@ echo $_SESSION['success'];
                 <input type="submit" name="addaru"  value="Áru hozzáadása"  id="submit">
             </form>
     
-            <form action="index.php?page=admin" method="POST">
+            <form action="index.php?page=upload" method="POST">
             <h2>Áru törlése:</h2>
                 <select name="delarunev" id="cat" required>
                 <option disabled selected value="defaultvalue">Válasszon árut!</option>
@@ -64,6 +55,7 @@ echo $_SESSION['success'];
                 </select>
                 <input type="submit" name="delaru" value="Áru törlése" id="submit">
             </form>
+           
                 </div>
     
         

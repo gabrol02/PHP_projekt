@@ -6,7 +6,8 @@ session_start();
 require 'includes/db.inc.php';
 // default oldal
 $page = 'index';
-$_SESSION['search']='';
+$_SESSION['kosarid']='';
+$_SESSION['modosit']='';
 $category="";
 $title='';
 $szoveg = "Belépés";
@@ -17,15 +18,18 @@ $action = "login";
         }
 }
 
-if(isset($_REQUEST['searched'])){
-                $_SESSION['search']=$_REQUEST['searched'];
-                $page = "searched"; 
-                $title=$_REQUEST['searched'];
-                
-
-}elseif(isset($_REQUEST['category'])){
-        $category=$_REQUEST['category'];
+if(isset($_REQUEST['kosarid'])){
+                $_SESSION['kosarid']=$_REQUEST['kosarid'];
+                $page = "kosar"; 
+                $title=$_REQUEST['kosarid'];
 }
+
+if(isset($_REQUEST['modositid'])){
+        $_SESSION['modositid']=$_REQUEST['modositid'];
+        $page = "kosar";
+        $title=$_REQUEST['modositid'];
+}
+
 $menupontok = array(    'index' => "Főoldal",
                         $action => $szoveg,
                         'registration' => "Regisztráció"
@@ -40,17 +44,17 @@ if(!empty($_SESSION["felhasznalo_id"])) {
                 if($result->num_rows > 0){
                         $menupontok = array(    
                                 'index' => "Főoldal", 
-                                'profile'=> "Profil: ".$_SESSION['nev'],
                                 'upload'=>"Áru feltöltés",
                                 'admin'=>"Admin",
+                                'kosar'=>"Kosár",
                                 $action => $szoveg
                 
         );
                 }else{
                         $menupontok = array(    
                         'index' => "Főoldal", 
-                        'profile'=> "Profil: ".$_SESSION['nev'],
                         'upload'=>"Áru feltöltés",
+                        'kosar'=>"Kosár",
                         $action => $szoveg
         
 );  
@@ -70,9 +74,15 @@ if(array_key_exists($page,$menupontok)){
 include 'includes/htmlheader.inc.php';
 require 'model/Users.php';
 require 'model/Termek.php';
+require 'model/Kosar.php';
+require 'model/Tipus.php';
 $tanulo=new Users;
 $termek=new Termek;
+$kosar=new Kosar;
+$tipus=new Tipus;
+$tipusIds=$tipus->tipusLista($conn);
 $termekIds=$termek->termekekLista($conn);
+$kosarIds=$kosar->kosarLista($conn);
 ?>
 
 
