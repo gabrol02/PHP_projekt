@@ -14,8 +14,14 @@ if(isset($_POST['nev']) and isset($_POST['jelszo'])) {
 					
 					$_SESSION['felhasznalo_id'] = $row['felhasznalo_id'];
 					$_SESSION['nev'] = $tanulo->get_nev();
-					$_SESSION['emailcim'] = $tanulo->get_emailcim();					
-                    header('Location: index.php');
+					$_SESSION['emailcim'] = $tanulo->get_emailcim();
+					$sql = "SELECT admin_id FROM admin WHERE felhasznalo_id = '".htmlspecialchars(mysqli_real_escape_string($conn,$row['felhasznalo_id']))."' ";
+					if(!$result = $conn->query($sql)) echo $conn->error;
+					if ($result->num_rows > 0) {
+						
+					$_SESSION['admin'] = $row['felhasznalo_id'];
+					}	
+					header('Location: index.php');
                     exit();
 				}
 				else $loginError .= 'Érvénytelen jelszó<br>';

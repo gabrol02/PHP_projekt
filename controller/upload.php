@@ -4,45 +4,44 @@ if (empty($_SESSION['felhasznalo_id'])) {
     header('Location: index.php?page=index');
 }
 
-$i= 0;
-$errors=array();
-$target_dir = "pictures/";
-$allowed_filetypes=array('image/png','image/jpg','image/jpeg');
+$deleteAruError="";
+$addAruError="";
 
+if(isset($_POST['addaru'])){
 
-if(isset($_POST['submit'])  ){
-    $_SESSION['success']="";
-    if(isset($_POST['cat'])){
-    if($_POST['cat']!="defaultcategory"){
-    if (isset($_FILES["fileToUpload"]['name'][0])!=null) { 
-        foreach($_FILES["fileToUpload"]["name"] as $key=>$name ){
-            
-            $target_file = $target_dir.date("Y-m-d")."-".date("h-i-sa").basename($name);
-            $target_file=str_replace(" ","_",$target_file);
-            if (!in_array($_FILES["fileToUpload"]["type"][$key],$allowed_filetypes)) {
-                $errors[$key][]="A $name fájl nem jpg vagy png vagy jpeg";
-            }
-            if(empty($errors[$key])){
-                if (@move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key],$target_file)) {
-                    $i++;
-                    $str=explode("/",$_FILES["fileToUpload"]["type"][$key]);
-                    $sql="INSERT INTO pictures (users_id,picture_name,size,formats,cat_id)
-                        VALUES ('".$_SESSION['users_id']."','".$target_file."','".$_FILES["fileToUpload"]["size"][$key]."','".$str[1]."','".$_POST['cat']."')";
-                    if ($conn->query($sql) === TRUE) {
-                        $_SESSION['success']="Sikeres feltöltés";
-                        header('Location: index.php?page=upload');
-                    } else {
-                        echo "Error: " . $sql . "<br>" . $conn->error;
-                    }
+    if ( isset($_POST['addaruar']) and isset($_POST['addarukat']) and isset($_POST['addarunev'])) {
+
+        if(!empty($_POST['addarunev'])) {
+       $sql = "SELECT termek_nev FROM termek WHERE termek_nev = '".$_POST['addarunev']."'";
+       if(!$result = $conn->query($sql)) echo $conn->error;
+       if ($result->num_rows > 0) {
+           $addAruError="Ilyen áru már létezik";
+       }else{
+           $sql="INSERT INTO termek(termek_nev,termek_ar,termek_tipus)
+           VALUES ('".$_POST['addarunev']."','".$_POST['addaruar']."','".$_POST['addarukat']."')";
+           if ($conn->query($sql) === TRUE) {
+               $addAruError="Sikeres áru hozzáadás";        
+           }else {
+               echo"Error: " . $sql . "<br>" . $conn->error;
+           }
+       }
+   }else $addAruError="Nem adtál meg nevet az új árunak.";
+   }
+   }
+   if (isset($_POST['delaru'])) {
+       if (isset($_POST['delaru']) and strlen($_POST['delarunev']!=0)) {
+           if($_POST['delarunev']!="defaultvalue"){
+                    $sql="DELETE FROM termek WHERE termekek_id='".$_REQUEST['delarunev']."'";
+                    if(!$result = $conn->query($sql)) echo $conn->error;
+                    if($conn->query($sql) === TRUE) {
+                       $deleteAruError="Sikeres áru törlés!<br>";
+                       
+                 } else {
+                   $deleteAruError="Error: " . $sql . "<br>" . $conn->error;
+                 }
                 }
-                    
-            }
-        }
-    }else $errors[$key][]="Nincs fájl kiválasztva";
-    
-}
-}else  $errors[$key][]="Nincs kategória kiválasztva";
-}
+            }else $deleteAruError="Válassza ki az árut akit törölni akar.";
+   }
 
 
 include "view/upload.php"
