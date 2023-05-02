@@ -2,6 +2,7 @@
  $sql="SELECT kosar_id FROM kosar WHERE   felhasznalo_id=".$_SESSION['felhasznalo_id']."";
  if(!$result = $conn->query($sql)) echo $conn->error;
  if($result->num_rows > 0){
+    echo"<div class='flex-container' id='flex-con'>";
 if ($kosarIds) {
    
     foreach($kosarIds as $kosarId) {
@@ -15,12 +16,12 @@ if ($kosarIds) {
             if(!$rs = $conn->query($sql)) echo $conn->error;
             if($rs->num_rows > 0){
             while($row = $rs->fetch_assoc()){
-            echo '
-                    <span >Termék: '.$row['termek_nev'].' <a href="index.php?page=kosar&kosarid='.$kosarId.'">X</a><br> Mennyiség: '.$kosar->get_kosar_mennyiseg().' </span> 
+            echo '<div class="keret">
+                    <span >Termék: '.$row['termek_nev'].' <br> Mennyiség: '.$kosar->get_kosar_mennyiseg().' </span> 
                     <form action="index.php?page=kosar&modositid='.$kosarId.'" method="POST">
-                    <input type="text" name="mennyiseg"  required> 
+                    <input type="text" name="mennyiseg"  required> <a href="index.php?page=kosar&kosarid='.$kosarId.'">X</a>
                     <input type="submit"  value="Módosít"><br>
-                    </form>
+                    </form></div>
                     
                     
                     
@@ -33,7 +34,8 @@ if ($kosarIds) {
         }
     }
 }
-echo '<input type="submit" name="veglegesit" value="Véglegesít"><br>';
+echo'</div>';
+echo '<div class="middle"><form action="index.php?page=kosar" method="POST"><input type="submit" name="veglegesit" value="Véglegesít"></form></div><br>';
  }else echo 'Üres a kosarad. <a href="index.php?page=index">Irány vásárolni</a>';
     
         

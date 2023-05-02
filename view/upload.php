@@ -1,6 +1,5 @@
 <?php 
 echo $deleteAruError;
-
 echo $addAruError;
 
 ?>

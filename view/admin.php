@@ -1,13 +1,13 @@
 <?php
-echo "<div id='fehel'>";
+
 echo $deleteAdminError;
 echo $addAdminError;
-echo "</div>";
+
 ?>
 <div class="middle">
 <form action="index.php?page=admin" method="POST">
         <h2>Admin hozzáadása:</h2>
-            <select name="addadminnev" id="cat" required>
+            <select name="addadminnev"  required>
             <option disabled selected value="defaultvalue">Válasszon felhasználót!</option>
                <?php 
                 $sql="SELECT nev,felhasznalo_id FROM felhasznalo  where felhasznalo_id not in (SELECT felhasznalo_id from admin)";
@@ -32,7 +32,7 @@ if($result->num_rows > 0){
 ?>
         <form action="index.php?page=admin" method="POST">
         <h2>Admin törlése:</h2>
-            <select name="deladminnev" id="cat" required>
+            <select name="deladminnev"  required>
             <option disabled selected value="defaultvalue">Válasszon felhasználót!</option>
                <?php 
                 $sql="SELECT admin.felhasznalo_id,nev FROM admin INNER JOIN felhasznalo ON felhasznalo.felhasznalo_id=admin.felhasznalo_id  and admin.felhasznalo_id not like ".$_SESSION['felhasznalo_id'];
@@ -48,9 +48,9 @@ if($result->num_rows > 0){
                 ?>
                 
             </select>
-            <input type="submit" name="deleteadmin" value="Admin törlése"id="submit">
+            <input type="submit" name="deleteadmin" value="Admin törlése" id="submit">
         </form>
-            </div>
+            
             <?php
             }
             ?>
@@ -78,7 +78,7 @@ if($result->num_rows > 0){
                         </select>
                         <input type="submit" name="deletetipus" value="Típus törlése" id="submit">
                     </form>
-                 
+                    </div>
             
 
             

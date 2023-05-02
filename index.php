@@ -8,6 +8,7 @@ require 'includes/db.inc.php';
 $page = 'index';
 $_SESSION['kosarid']='';
 $_SESSION['modosit']='';
+$_SESSION['search']='';
 $category="";
 $title='';
 $szoveg = "Belépés";
@@ -23,7 +24,11 @@ if(isset($_REQUEST['kosarid'])){
                 $page = "kosar"; 
                 $title=$_REQUEST['kosarid'];
 }
-
+if(isset($_REQUEST['searched'])){
+        $_SESSION['search']=$_REQUEST['searched'];
+        $page = "searchedTermek"; 
+        $title=$_REQUEST['searched'];
+}
 if(isset($_REQUEST['modositid'])){
         $_SESSION['modositid']=$_REQUEST['modositid'];
         $page = "kosar";
@@ -53,7 +58,6 @@ if(!empty($_SESSION["felhasznalo_id"])) {
                 }else{
                         $menupontok = array(    
                         'index' => "Főoldal", 
-                        'upload'=>"Áru feltöltés",
                         'kosar'=>"Kosár",
                         $action => $szoveg
         
@@ -76,7 +80,7 @@ require 'model/Users.php';
 require 'model/Termek.php';
 require 'model/Kosar.php';
 require 'model/Tipus.php';
-$tanulo=new Users;
+$felhasznalo=new Users;
 $termek=new Termek;
 $kosar=new Kosar;
 $tipus=new Tipus;
