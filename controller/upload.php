@@ -1,6 +1,6 @@
 <?php
 
-if (empty($_SESSION['felhasznalo_id'])) {
+if (empty($_SESSION['admin'])) {
     header('Location: index.php?page=index');
 }
 

@@ -27,8 +27,6 @@ if (isset($_SESSION['modositid']) and isset($_POST['mennyiseg']) ) {
  }
 }
 if (isset($_POST['veglegesit'])) {
-  echo 'Gombnyomás <br>';
-  
       $sql = "SELECT felhasznalo_id,termek_id,mennyiseg FROM kosar WHERE felhasznalo_id = '".$_SESSION['felhasznalo_id']."'";
       if(!$result = $conn->query($sql)) echo $conn->error;
       if($result->num_rows > 0){

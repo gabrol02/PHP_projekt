@@ -9,12 +9,12 @@ if(isset($_POST['nev']) and isset($_POST['jelszo'])) {
 		if(!$result = $conn->query($sql)) echo $conn->error;
 		if ($result->num_rows > 0) {
 			if($row = $result->fetch_assoc()) {
-				$tanulo -> set_user($row['felhasznalo_id'], $conn);
-				if($_POST['jelszo'] == $tanulo->get_jelszo()) {
+				$felhasznalo -> set_user($row['felhasznalo_id'], $conn);
+				if($_POST['jelszo'] == $felhasznalo->get_jelszo()) {
 					
 					$_SESSION['felhasznalo_id'] = $row['felhasznalo_id'];
-					$_SESSION['nev'] = $tanulo->get_nev();
-					$_SESSION['emailcim'] = $tanulo->get_emailcim();
+					$_SESSION['nev'] = $felhasznalo->get_nev();
+					$_SESSION['emailcim'] = $felhasznalo->get_emailcim();
 					$sql = "SELECT admin_id FROM admin WHERE felhasznalo_id = '".htmlspecialchars(mysqli_real_escape_string($conn,$row['felhasznalo_id']))."' ";
 					if(!$result = $conn->query($sql)) echo $conn->error;
 					if ($result->num_rows > 0) {
